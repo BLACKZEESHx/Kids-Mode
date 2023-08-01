@@ -92,14 +92,19 @@ class MainWindow(QMainWindow):
 
 # Running application
 if __name__ == "__main__":
+    
     # create The Application runner
     app = QApplication(sys.argv)
+    
     # Create the Application Object
     window = MainWindow()
+    
     # Style the Application
     apply_stylesheet(app, theme=list_themes()[0])
+    
     # Show the Application
     window.showFullScreen()
+    
     # Excute the Application
     sys.exit(app.exec())
     
