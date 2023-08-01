@@ -1,42 +1,52 @@
-import sys, os
+# Importing Libraries
+import sys
 from PyQt6.QtCore import *
 from PyQt6.QtGui import *
-# from PyQt6.QtWebEngineWidgets import QWebEngineView
 from PyQt6.QtWidgets import QMainWindow, QApplication, QMdiArea, QMdiSubWindow, QPushButton, QGridLayout, QWidget, QProgressBar, QLabel, QLineEdit
-from pyautogui import size
 from qt_material import apply_stylesheet, list_themes
 import uimain
-# import browser
 import datetime as dt
-# from QtTheme import a
 
+# Creating class for new application
 class MainWindow(QMainWindow):
+    # Initialize application
     def __init__(self):
         super(MainWindow, self).__init__()
+        
+        # variable for ui of main window
         self.ui = uimain.Ui_MainWindow()
+        
+        # Setting up ui on main window
         self.ui.setupUi(self)
+        
+        # If youtube button is clicked so open youtube
         self.ui.youtube_btn.clicked.connect(self.open_youtube)
+        
+        # Like youtube button it works exactly same but just different is youtube button open youtube and this open setttings app of this application
         self.ui.setting_btn.clicked.connect(self.open_setting)
+        
+        # Create Timer to check every second function(bla, blaa...)
         self.timer = QTimer()
         self.timer.setParent(self)
         self.timer.timeout.connect(self.check_fullscreen)
         self.timer.start(1)
 
+        # Create button for to all app that opened in this window
         self.quitapp = QShortcut(QKeySequence("Ctrl+Q"), self)
         self.quitapp.activated.connect(self.quitapps)
+
         # self.ui.time_label.setStyleSheet("border: 5px solid white")
-        # self.ui.time_label.geometry().setWidth(self.ui.time_label.width()+8)
-        # self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.Tool | Qt.CustomizeWindowHint)
+        
+        # Setting Window Flags
         self.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint, True)
         self.setWindowFlag(Qt.WindowType.FramelessWindowHint, True)
         self.setWindowFlag(Qt.WindowType.Tool, True)
-        # self.ui.windowW.setVisible(True)
         
-        # QMdiSubWindow
-
+    # function for when setting app is closing so set ui again
     def setting_appcloseEvent(self, event):
         self.ui.setupUi(self)
 
+    # It's connected to quitapp when quitapp button will be pressed it to close all window other wise it will ignore it
     def quitapps(self):
         try:
             self.brW.close()
@@ -46,11 +56,7 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
         self.ui.youtube_btn.clicked.connect(self.open_youtube)
 
-        # if self.brW.isVisible():
-            # self.brW.setVisible(False)
-        
-        # self.brW.setVisible(True)
-
+    # this conneted to setting button when setting button is clicked so it will open a window inside window
     def open_setting(self):
         self.mdarea = QMdiArea()
         self.subwindow = QMdiSubWindow(self.mdarea)
@@ -61,6 +67,7 @@ class MainWindow(QMainWindow):
 
         self.setCentralWidget(self.mdarea)
 
+    # this connected to youtube button when youtube button is clicked it show youtube page
     def open_youtube(self):
         self.showMaximized()
         self.activateWindow()
@@ -68,16 +75,8 @@ class MainWindow(QMainWindow):
         # self.setCentralWidget(self.brW)
         self.showFullScreen()
 
-        # options = Options()
-        # options.add_experimental_option('detach', True)
-        # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),
-        #                         options=options)
 
-        # driver.get("https://www.youtube.com/")
-        # driver.fullscreen_window()
-        # os.system(r"python D:\backu\Kids Mode\selnium_yt.py")
-
-
+    # this function connects to timer it check every second time and is window is fullscreen
     def check_fullscreen(self):
         current_time = dt.datetime.now().strftime('%H:%M:%S')
         # self.ui.time_label.geometry().setWidth(self.ui.time_label.width()+10)
@@ -91,9 +90,16 @@ class MainWindow(QMainWindow):
         else:
             pass
 
+# Running application
 if __name__ == "__main__":
+    # create The Application runner
     app = QApplication(sys.argv)
+    # Create the Application Object
     window = MainWindow()
+    # Style the Application
     apply_stylesheet(app, theme=list_themes()[0])
+    # Show the Application
     window.showFullScreen()
+    # Excute the Application
     sys.exit(app.exec())
+    
