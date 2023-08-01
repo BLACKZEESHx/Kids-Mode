@@ -22,7 +22,8 @@ class MainWindow(QMainWindow):
         # If youtube button is clicked so open youtube
         self.ui.youtube_btn.clicked.connect(self.open_youtube)
         
-        # Like youtube button it works exactly same but just different is youtube button open youtube and this open setttings app of this application
+        # Like youtube button it works exactly same but just different 
+        # is youtube button open youtube and this open setttings app of this application
         self.ui.setting_btn.clicked.connect(self.open_setting)
         
         # Create Timer to check every second function(bla, blaa...)
@@ -92,7 +93,7 @@ class MainWindow(QMainWindow):
 
 # Running application
 if __name__ == "__main__":
-    
+
     # create The Application runner
     app = QApplication(sys.argv)
     
