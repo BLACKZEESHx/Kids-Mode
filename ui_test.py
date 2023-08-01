@@ -46,6 +46,17 @@ class MainWindow(QMainWindow):
     # function for when setting app is closing so set ui again
     def setting_appcloseEvent(self, event):
         self.ui.setupUi(self)
+        self.ui.setting_btn = QPushButton(parent=self.ui.widget)
+        self.ui.setting_btn.setMaximumSize(QSize(80, 72))
+        self.ui.setting_btn.setStyleSheet("")
+        self.ui.setting_btn.setText("")
+        icon1 = QIcon()
+        icon1.addPixmap(QPixmap("assets\\settings.png"), QIcon.Mode.Normal, QIcon.State.Off)
+        self.ui.setting_btn.setIcon(icon1)
+        self.ui.setting_btn.setIconSize(QSize(60, 64))
+        self.ui.setting_btn.setObjectName("setting_btn")
+        self.ui.horizontalLayout.addWidget(self.ui.setting_btn)
+
 
     # It's connected to quitapp when quitapp button will be pressed it to close all window other wise it will ignore it
     def quitapps(self):
