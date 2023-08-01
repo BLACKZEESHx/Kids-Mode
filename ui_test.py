@@ -2,11 +2,11 @@ import sys, os
 from PyQt6.QtCore import *
 from PyQt6.QtGui import *
 # from PyQt6.QtWebEngineWidgets import QWebEngineView
-from PyQt6.QtWidgets import QMainWindow, QApplication, QMdiArea, QMdiSubWindow, QPushButton, QGridLayout, QWidget, QProgressBar, QLabel
+from PyQt6.QtWidgets import QMainWindow, QApplication, QMdiArea, QMdiSubWindow, QPushButton, QGridLayout, QWidget, QProgressBar, QLabel, QLineEdit
 from pyautogui import size
 from qt_material import apply_stylesheet, list_themes
 import uimain
-import browser
+# import browser
 import datetime as dt
 # from QtTheme import a
 
@@ -16,18 +16,26 @@ class MainWindow(QMainWindow):
         self.ui = uimain.Ui_MainWindow()
         self.ui.setupUi(self)
         self.ui.youtube_btn.clicked.connect(self.open_youtube)
+        self.ui.setting_btn.clicked.connect(self.open_setting)
         self.timer = QTimer()
         self.timer.setParent(self)
         self.timer.timeout.connect(self.check_fullscreen)
         self.timer.start(1)
-        self.brW = browser.MainWindow()
-        
+
         self.quitapp = QShortcut(QKeySequence("Ctrl+Q"), self)
         self.quitapp.activated.connect(self.quitapps)
+        # self.ui.time_label.setStyleSheet("border: 5px solid white")
+        # self.ui.time_label.geometry().setWidth(self.ui.time_label.width()+8)
         # self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.Tool | Qt.CustomizeWindowHint)
         self.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint, True)
         self.setWindowFlag(Qt.WindowType.FramelessWindowHint, True)
         self.setWindowFlag(Qt.WindowType.Tool, True)
+        # self.ui.windowW.setVisible(True)
+        
+        # QMdiSubWindow
+
+    def setting_appcloseEvent(self, event):
+        self.ui.setupUi(self)
 
     def quitapps(self):
         try:
@@ -43,11 +51,21 @@ class MainWindow(QMainWindow):
         
         # self.brW.setVisible(True)
 
+    def open_setting(self):
+        self.mdarea = QMdiArea()
+        self.subwindow = QMdiSubWindow(self.mdarea)
+        self.subwindow.showMaximized()
+        self.subwindow.closeEvent = self.setting_appcloseEvent
+        self.mdarea.setGeometry(self.subwindow.geometry())
+        self.subwindow.setWidget(QLineEdit())
+
+        self.setCentralWidget(self.mdarea)
+
     def open_youtube(self):
         self.showMaximized()
         self.activateWindow()
-        self.brW.showFullScreen()
-        self.setCentralWidget(self.brW)
+        # self.brW.showFullScreen()
+        # self.setCentralWidget(self.brW)
         self.showFullScreen()
 
         # options = Options()
@@ -61,9 +79,11 @@ class MainWindow(QMainWindow):
 
 
     def check_fullscreen(self):
-        current_time = dt.datetime.now().strftime('%H:%M:%S\n%d:%M:%Y')
+        current_time = dt.datetime.now().strftime('%H:%M:%S')
+        # self.ui.time_label.geometry().setWidth(self.ui.time_label.width()+10)
         try:
             self.ui.time_label.setText(current_time)
+            self.ui.time_label.resize(self.ui.time_label.width()+3, self.ui.time_label.height())
         except RuntimeError as e:
             pass
         if self.isFullScreen() is False:

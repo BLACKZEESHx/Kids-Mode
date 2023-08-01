@@ -1,4 +1,4 @@
-from .Setup import Setup
+from .assets import 
 
 class Setting_App(Setup):
     def __init__(self):
